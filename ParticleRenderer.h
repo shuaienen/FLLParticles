@@ -1,15 +1,4 @@
-/*
- * Copyright 1993-2012 NVIDIA Corporation.  All rights reserved.
- *
- * Please refer to the NVIDIA end user license agreement (EULA) associated
- * with this source code for terms and conditions that govern your use of
- * this software. Any use, reproduction, disclosure, or distribution of
- * this software and related documentation outside the terms of the EULA
- * is strictly prohibited.
- *
- */
-
-// Smoke particle renderer with volumetric shadows
+//particle renderer with volumetric shadows
 
 #ifndef SMOKE_RENDERER_H
 #define SMOKE_RENDERER_H
@@ -157,7 +146,7 @@ class SmokeRenderer
         void render();
         void debugVectors();
 
-		//»æÖÆÆÊÃæ
+		//ç»˜åˆ¶å‰–é¢
 		void drawProfile();
 
     private:
@@ -234,10 +223,10 @@ class SmokeRenderer
         GLuint              m_lightTexture[2];
         int                 m_srcLightTexture;
         GLuint              m_lightDepthTexture;
-		FramebufferObject   *m_lightFbo;//Óëm_lightTexture°ó¶¨
+		FramebufferObject   *m_lightFbo;//ä¸m_lightTextureç»‘å®š
 
         GLuint              m_imageTex, m_depthTex;
-        FramebufferObject   *m_imageFbo;//Óëm_imageTex°ó¶¨£¬×îºóËùÓĞsliceºÏ³Éµ½imageTexÀï
+        FramebufferObject   *m_imageFbo;//ä¸m_imageTexç»‘å®šï¼Œæœ€åæ‰€æœ‰sliceåˆæˆåˆ°imageTexé‡Œ
 };
 
 #endif
