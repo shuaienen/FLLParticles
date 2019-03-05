@@ -36,7 +36,7 @@
 //#define IMAGE_HEIGHT		1150
 //#define GRID_SIZE			512
 //#define SCENE_LENTH			4.0f
-//Ã¿Ò»¶È¶ÔÓ¦OpenGL×ø±êµÄ1
+//æ¯ä¸€åº¦å¯¹åº”OpenGLåæ ‡çš„1
 #define SCALE_FACTOR		1.0f
 #define HEIGHT_SCALE		0.0001f
 
@@ -73,7 +73,7 @@ vec3f cameraPos(124.478745, 3.057085,  27.905659);
 vec3f cameraRot(-134.399994, -146.399994, 0.0);
 vec3f cameraPosLag(cameraPos);
 vec3f cameraRotLag(cameraRot);
-//ÕâÀïµÄcursor´ú±í Á£×ÓÉú³ÉµÄÖÐÐÄÎ»ÖÃ
+//è¿™é‡Œçš„cursorä»£è¡¨ ç²’å­ç”Ÿæˆçš„ä¸­å¿ƒä½ç½®
 vec3f cursorPos(0, 1, 0);
 vec3f cursorPosLag(cursorPos);
 
@@ -209,7 +209,7 @@ void cleanup()
 	}
 }
 
-//Ñ§Ï°Ò»ÏÂshaderµÄdisable·½·¨
+//å­¦ä¹ ä¸€ä¸‹shaderçš„disableæ–¹æ³•
 void renderScene()
 {
 	glEnable(GL_DEPTH_TEST);
@@ -228,16 +228,16 @@ void renderScene()
 
 		glNormal3f(0.0, 1.0, 0.0);
 
-		// Ê¹ÓÃ¶¥µã£¬ÎÆÀí×ø±êÊý×é
+		// ä½¿ç”¨é¡¶ç‚¹ï¼Œçº¹ç†åæ ‡æ•°ç»„
 		glEnableClientState( GL_VERTEX_ARRAY ); 
 		glEnableClientState( GL_TEXTURE_COORD_ARRAY ); 
 
 		glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_VBOVertices );
-		glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// ÉèÖÃ¶¥µãÊý×éµÄÖ¸ÕëÎª¶¥µã»º´æ
+		glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// è®¾ç½®é¡¶ç‚¹æ•°ç»„çš„æŒ‡é’ˆä¸ºé¡¶ç‚¹ç¼“å­˜
 		glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_VBOTexCoords );
-		glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );		// ÉèÖÃ¶¥µãÊý×éµÄÖ¸ÕëÎªÎÆÀí×ø±ê»º´æ
+		glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );		// è®¾ç½®é¡¶ç‚¹æ•°ç»„çš„æŒ‡é’ˆä¸ºçº¹ç†åæ ‡ç¼“å­˜
 
-		// äÖÈ¾
+		// æ¸²æŸ“
 		glDrawArrays( GL_TRIANGLES, 0, m_VertexCount );		
 
 		glDisableClientState( GL_VERTEX_ARRAY );	
@@ -254,7 +254,7 @@ void renderScene()
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
 
-	//draw profileÆÊÃæ
+	//draw profileå‰–é¢
 	
 
 	//// draw light
@@ -310,7 +310,7 @@ void renderLabel()
 }
 
 // main rendering loop
-//¿´ÍêÂÛÎÄºó¿´ÈçºÎ»ùÓÚÎÆÀí»æÖÆVolumeµÄ
+//çœ‹å®Œè®ºæ–‡åŽçœ‹å¦‚ä½•åŸºäºŽçº¹ç†ç»˜åˆ¶Volumeçš„
 void display()
 {
 	sdkStartTimer(&timer);
@@ -321,7 +321,7 @@ void display()
 	//	cameraPos[1] = 0.0f;
 	//}
 
-	//¹ßÐÔ:ÊµÏÖ·½·¨£¬±ä»¯ºóµÄ-±ä»¯Ç°µÄ *²ÎÊý£¬ÂýÂý±ä¡£¡£
+	//æƒ¯æ€§:å®žçŽ°æ–¹æ³•ï¼Œå˜åŒ–åŽçš„-å˜åŒ–å‰çš„ *å‚æ•°ï¼Œæ…¢æ…¢å˜ã€‚ã€‚
 	cameraPosLag += (cameraPos - cameraPosLag) * inertia;
 	cameraRotLag += (cameraRot - cameraRotLag) * inertia;
 	cursorPosLag += (cursorPos - cursorPosLag) * inertia;
@@ -349,10 +349,10 @@ void display()
 		currentTime += timestep;
 	}
 
-	//Ç°Ãæ²¿·ÖÊÇÉú³ÉÁ£×Ó¼°Á£×ÓµÄ´úÐ»
-	//ºóÃæ²¿·Ö¶Ôµ±Ç°Á£×Ó³¡¾°½øÐÐ»ùÓÚÎÆÀíµÄÌå»æÖÆ
+	//å‰é¢éƒ¨åˆ†æ˜¯ç”Ÿæˆç²’å­åŠç²’å­çš„ä»£è°¢
+	//åŽé¢éƒ¨åˆ†å¯¹å½“å‰ç²’å­åœºæ™¯è¿›è¡ŒåŸºäºŽçº¹ç†çš„ä½“ç»˜åˆ¶
 
-	//¼ÆËãhalfvector£¬×÷ÎªÁ£×ÓÅÅÐòÖá
+	//è®¡ç®—halfvectorï¼Œä½œä¸ºç²’å­æŽ’åºè½´
 	renderer->calcVectors();
 	vec3f sortVector = renderer->getSortVector();
 
@@ -374,13 +374,13 @@ void display()
 	// draw particles
 	if (displayEnabled)
 	{
-		//²Ã¼ôµ½³¡¾°ÉÏ·½
-		//m_imageFboÍê³ÉÁ£×ÓºÏ³É½á¹û
+		//è£å‰ªåˆ°åœºæ™¯ä¸Šæ–¹
+		//m_imageFboå®Œæˆç²’å­åˆæˆç»“æžœ
 		renderer->beginSceneRender(SmokeRenderer::SCENE_BUFFER);
 		renderScene();
 		renderer->endSceneRender(SmokeRenderer::SCENE_BUFFER);
 
-		// lightbufferµþ¼Ó¹âÕÕÐ§¹ûºÍµ¹Ó°
+		// lightbufferå åŠ å…‰ç…§æ•ˆæžœå’Œå€’å½±
 		renderer->beginSceneRender(SmokeRenderer::LIGHT_BUFFER);
 		renderScene();
 		renderer->endSceneRender(SmokeRenderer::LIGHT_BUFFER);
@@ -415,7 +415,7 @@ void display()
 		//renderer->drawProfile();
 	}
 
-	//³õÊ¼»¯ÍêÁË¾Í²»sort£¬Ìá¸ßËÙ¶È
+	//åˆå§‹åŒ–å®Œäº†å°±ä¸sortï¼Œæé«˜é€Ÿåº¦
 	if (!changeSortOnce)
 	{
 		sort = false;
@@ -474,7 +474,7 @@ void reshape(int w, int h)
 	renderer->setWindowSize(w, h);
 }
 
-//Êó±ê°´¼ü
+//é¼ æ ‡æŒ‰é”®
 void mouse(int button, int state, int x, int y)
 {
 	int mods;
@@ -523,7 +523,7 @@ void xform(vec3f &v, vec3f &r, float *m)
 }
 
 // transform vector by transpose of matrix (assuming orthonormal)
-// Æ½ÒÆ±ä»»µÄÔöÁ¿£¬vÎª·½Ïò£¬mÎªModelviewMatrix
+// å¹³ç§»å˜æ¢çš„å¢žé‡ï¼Œvä¸ºæ–¹å‘ï¼Œmä¸ºModelviewMatrix
 void ixform(vec3f &v, vec3f &r, float *m)
 {
 	r.x = v.x*m[0] + v.y*m[1] + v.z*m[2];
@@ -540,7 +540,7 @@ void ixformPoint(vec3f &v, vec3f &r, float *m)
 	ixform(x, r, m);
 }
 
-//Êó±êÒÆ¶¯
+//é¼ æ ‡ç§»åŠ¨
 void motion(int x, int y)
 {
 	float dx, dy;
@@ -762,7 +762,7 @@ void key(unsigned char key, int /*x*/, int /*y*/)
 
 	glutPostRedisplay();
 }
-//upÁË£¬¾ÍÍ£Ö¹°´ÏÂÊ±µÄ²Ù×÷====¡·¸Ä½¨ÖÃÎªfalse
+//upäº†ï¼Œå°±åœæ­¢æŒ‰ä¸‹æ—¶çš„æ“ä½œ====ã€‹æ”¹å»ºç½®ä¸ºfalse
 void keyUp(unsigned char key, int /*x*/, int /*y*/)
 {
 	keyDown[key] = false;
@@ -826,7 +826,7 @@ void idle(void)
 		cameraPos[2] -= modelView[9] * walkSpeed;
 	}
 
-	//´Ë´¦²»ÔÙÄ£Äâ¹ì¼£ÔË¶¯
+	//æ­¤å¤„ä¸å†æ¨¡æ‹Ÿè½¨è¿¹è¿åŠ¨
 	//if (animateEmitter)
 	//{
 	//	const float speed = 0.02f;
@@ -878,12 +878,12 @@ void initParams()
 	params->AddParam(new Param<float>("particle lifetime", particleLifetime, 0.0f, 1000.0f, 1.0f, &particleLifetime));
 }
 
-//µ÷ÓÃ°´¼üÏìÓ¦
+//è°ƒç”¨æŒ‰é”®å“åº”
 void mainMenu(int i)
 {
 	key((unsigned char) i, 0, 0);
 }
-//ÓÒ¼ü²Ëµ¥
+//å³é”®èœå•
 void initMenus()
 {
 	glutCreateMenu(mainMenu);
@@ -931,7 +931,7 @@ GLuint load24bitTexture(char *filename)
 		m_bmpReader = new BmpReader();
 	}
 	
-	//¶Á24bitµÄbmp
+	//è¯»24bitçš„bmp
 	m_bmpReader->Read24bitBmp((uchar4 **)&data, &width, &height, filename);
 
 	if (!data)
@@ -949,11 +949,11 @@ GLuint ATLLoadTexture(const char *fileName)
 {  
 	BITMAP bm;  
 	GLuint idTexture = 0;  
-	CImage img;             //ÐèÒªÍ·ÎÄ¼þatlimage.h  
+	CImage img;             //éœ€è¦å¤´æ–‡ä»¶atlimage.h  
 	HRESULT hr = img.Load(fileName);  
-	if ( !SUCCEEDED(hr) )   //ÎÄ¼þ¼ÓÔØÊ§°Ü  
+	if ( !SUCCEEDED(hr) )   //æ–‡ä»¶åŠ è½½å¤±è´¥  
 	{  
-		MessageBox(NULL, "ÎÄ¼þ¼ÓÔØÊ§°Ü", "ERROR", 0);  
+		MessageBox(NULL, "æ–‡ä»¶åŠ è½½å¤±è´¥", "ERROR", 0);  
 		return NULL;  
 	}  
 	HBITMAP hbmp = img;  
@@ -965,19 +965,19 @@ GLuint ATLLoadTexture(const char *fileName)
 	return createTexture(GL_TEXTURE_2D, GL_RGBA8, GL_BGR, bm.bmWidth, bm.bmHeight, bm.bmBits);	
 } 
 
-//ÓÃGDAL¶ÁÈ¡DEM
-//½«DEMÊäÈëµ½¶¥µãÊý×é
+//ç”¨GDALè¯»å–DEM
+//å°†DEMè¾“å…¥åˆ°é¡¶ç‚¹æ•°ç»„
 bool InitDEM()
 {	
 	char *imagePath = "data/image/Dem2.tif";
 
-	//¶ÁTIFFÍ¼Ïñ¼°³¤¿í
+	//è¯»TIFFå›¾åƒåŠé•¿å®½
 	TiffReader *tfReader = new TiffReader();
 	tfReader->OpenFile(imagePath);
 	unsigned int height = tfReader->GetRasterHeight();
 	unsigned int width = tfReader->GetRasterWidth();
 
-	//×Ü¶¥µãÊý
+	//æ€»é¡¶ç‚¹æ•°
 	m_VertexCount = width * height * 6;
 	m_Vertices = new Vert[m_VertexCount];
 	m_TexCoords = new TexCoord[m_VertexCount];
@@ -999,8 +999,8 @@ bool InitDEM()
 				m_Vertices[nIndex].y = tfReader->GetPixelValue(flX, flZ) *  HEIGHT_SCALE;
 				m_Vertices[nIndex].y = m_Vertices[nIndex].y > 0 ? m_Vertices[nIndex].y : 0;
 				m_Vertices[nIndex].y = -m_Vertices[nIndex].y;
-				//ÎÒÒ²²»ÖªµÀÎªÊ²Ã´YÒª·­¹ýÀ´£¬µ«ÊÇÕâÑù¸Õ¸ÕÕýºÃ
-				//ºÃÏñÕû¸öÊÓ½Ç¶¼ÊÇ·­¹ýÀ´µÄ£¬ÏÈ´ÕºÏ×ÅÓÃ°É
+				//æˆ‘ä¹Ÿä¸çŸ¥é“ä¸ºä»€ä¹ˆYè¦ç¿»è¿‡æ¥ï¼Œä½†æ˜¯è¿™æ ·åˆšåˆšæ­£å¥½
+				//å¥½åƒæ•´ä¸ªè§†è§’éƒ½æ˜¯ç¿»è¿‡æ¥çš„ï¼Œå…ˆå‡‘åˆç€ç”¨å§
 				//m_Vertices[nIndex].z = -DEMStartLonLat.y - (height - flZ) * scaleUnit * demRes;
 				m_Vertices[nIndex].z = -DEMStartLonLat.y -  (height-flZ) * scaleUnit * demRes;
 
@@ -1012,14 +1012,14 @@ bool InitDEM()
 		}
 	}
 
-	glGenBuffersARB( 1, &m_VBOVertices );	// ´´½¨Ò»¸ö¶¥µã»º´æ£¬²¢°Ñ¶¥µãÊý¾Ý°ó¶¨µ½»º´æ	
+	glGenBuffersARB( 1, &m_VBOVertices );	// åˆ›å»ºä¸€ä¸ªé¡¶ç‚¹ç¼“å­˜ï¼Œå¹¶æŠŠé¡¶ç‚¹æ•°æ®ç»‘å®šåˆ°ç¼“å­˜	
 	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_VBOVertices );				
 	glBufferDataARB( GL_ARRAY_BUFFER_ARB, m_VertexCount*3*sizeof(float), m_Vertices, GL_STATIC_DRAW_ARB );
-	glGenBuffersARB( 1, &m_VBOTexCoords ); // ´´½¨Ò»¸öÎÆÀí»º´æ£¬²¢°ÑÎÆÀíÊý¾Ý°ó¶¨µ½»º´æ
+	glGenBuffersARB( 1, &m_VBOTexCoords ); // åˆ›å»ºä¸€ä¸ªçº¹ç†ç¼“å­˜ï¼Œå¹¶æŠŠçº¹ç†æ•°æ®ç»‘å®šåˆ°ç¼“å­˜
 	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_VBOTexCoords ); 
 	glBufferDataARB( GL_ARRAY_BUFFER_ARB, m_VertexCount*2*sizeof(float), m_TexCoords, GL_STATIC_DRAW_ARB );
 
-	// É¾³ý·ÖÅäµÄÄÚ´æ
+	// åˆ é™¤åˆ†é…çš„å†…å­˜
 	delete [] m_Vertices; m_Vertices = NULL;
 	delete [] m_TexCoords; m_TexCoords = NULL;
 	delete tfReader;
@@ -1060,7 +1060,7 @@ void initGL(int *argc, char **argv)
 		//imagePath = sdkFindFilePath("LABEL.bmp", "");
 		//labelTex = load24bitTexture(imagePath);
 
-		//´´½¨¶¥µãÊý×é
+		//åˆ›å»ºé¡¶ç‚¹æ•°ç»„
 		InitDEM();
 
 		floorProg = new GLSLProgram(floorVS, floorPS);
@@ -1097,126 +1097,3 @@ int main(int argc, char **argv)
 
 	
 }
-
-
-
-
-
-
-
-
-
-//double GetPixelValue(GDALDataset* dataset,int bandIndex,int row,int col)
-//{
-//	if(!dataset)
-//		return -3.4028234663852886e+38;
-//	double result;
-//	bool lockFlag = false;
-//	int blockXsize,blockYsize;
-//	GDALRasterBand* rasterBand = dataset->GetRasterBand(bandIndex);
-//	rasterBand->GetBlockSize(&blockXsize,&blockYsize);
-//	if(col>rasterBand->GetXSize()||row>rasterBand->GetYSize()||col<0||row<0)
-//		return -3.4028234663852886e+38;
-//	if(blockXsize>0&&blockYsize>0)
-//	{
-//		int elseXsize,elseYsize,blockX,blockY; 
-//		elseXsize = col%blockXsize;
-//		elseYsize = row%blockYsize;
-//		blockX = col/blockXsize;
-//		blockY = row/blockYsize;
-//		GDALDataType type = rasterBand->GetRasterDataType();
-//
-//		GByte* pabySrcBlock = (GByte *)(rasterBand->GetBlockData(blockX,blockY,FALSE));
-//
-//		GDALRasterBlock* poBlock = NULL;
-//		if (pabySrcBlock == NULL)
-//		{
-//			lockFlag = true;
-//			poBlock = rasterBand->GetLockedBlockRef( blockX, blockY, 
-//				FALSE );
-//			pabySrcBlock = (GByte *)(poBlock->GetDataRef());
-//			if( pabySrcBlock == NULL &&  poBlock != NULL)
-//			{
-//				lockFlag = false;
-//				poBlock->DropLock();
-//				poBlock = NULL;
-//			}
-//		}
-//
-//		int typeSize = GDALGetDataTypeSize(type);
-//		int normalSize = GDALGetDataTypeSize(GDALDataType::GDT_Byte);
-//		int step = typeSize/normalSize;
-//
-//
-//		if(type==GDALDataType::GDT_CFloat32||type==GDALDataType::GDT_Float32)
-//		{
-//			float value = 0;
-//			memcpy(&value,pabySrcBlock + (elseYsize*blockXsize+elseXsize)*step,step);
-//			result = value;
-//		}
-//		else if(type==GDALDataType::GDT_CFloat64||type==GDALDataType::GDT_Float64)
-//		{
-//			double value = 0;
-//			memcpy(&value,pabySrcBlock + (elseYsize*blockXsize+elseXsize)*step,step);
-//			result = value;
-//		}
-//		else if(type==GDALDataType::GDT_CInt16||type==GDALDataType::GDT_CInt32||type==GDALDataType::GDT_Int16||type==GDALDataType::GDT_Int32||type==GDALDataType::GDT_UInt16||type==GDALDataType::GDT_UInt32)
-//		{
-//
-//			long int value = 0;
-//			memcpy(&value,pabySrcBlock + (elseYsize*blockXsize+elseXsize)*step,step);
-//			result = value;
-//		}
-//		else if(type==GDALDataType::GDT_Byte)
-//		{
-//			GByte value = ((pabySrcBlock + (elseYsize*blockXsize+elseXsize)*step))[0];
-//			result = value;
-//		}
-//		else{
-//			result = -3.4028234663852886e+38;
-//		}
-//
-//		if( poBlock != NULL&&lockFlag)
-//		{
-//			poBlock->DropLock();
-//			poBlock = NULL;
-//		}
-//	}
-//	return result;
-//}
-
-
-
-
-
-
-
-
-//GDALAllRegister();
-
-//GDALDataset *pDataset = (GDALDataset *) GDALOpen("F:/VolumeRender/ncData/roms_avg_200001.nc", GA_ReadOnly);
-//if( pDataset == NULL )
-//{
-//	return false;
-//}
-//char** subdatasets = GDALGetMetadata((GDALDatasetH)pDataset,"SUBDATASETS");
-//if (CSLCount(subdatasets) > 0)
-//{
-//	for (int i = 0; subdatasets[i] != NULL; i+=2)
-//	{
-//		std::string tmpstr = std::string(subdatasets[i]);
-//		tmpstr = tmpstr.substr(tmpstr.find_first_of("=")+1);
-//		std::string varName = tmpstr.substr(tmpstr.find_last_of(":")+1);
-//		if(varName != "salt")
-//			continue;
-//		const char* tmpfileName = tmpstr.c_str();
-//		GDALDataset* tmpdt = (GDALDataset*)GDALOpen(tmpfileName,GA_ReadOnly); 
-//
-//
-//		for (int j = 0; j < tmpdt->GetRasterCount(); j++)
-//		{
-//			std::cout<<GetPixelValue(tmpdt,j+1,0,130)<<std::endl;
-//		}
-//	}
-//
-//}
