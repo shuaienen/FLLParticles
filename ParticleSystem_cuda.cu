@@ -1,16 +1,5 @@
 /*
- * Copyright 1993-2012 NVIDIA Corporation.  All rights reserved.
- *
- * Please refer to the NVIDIA end user license agreement (EULA) associated
- * with this source code for terms and conditions that govern your use of
- * this software. Any use, reproduction, disclosure, or distribution of
- * this software and related documentation outside the terms of the EULA
- * is strictly prohibited.
- *
- */
-
-/*
-This file contains simple wrapper functions that call the CUDA kernels
+This file contains wrapper functions that call the CUDA kernels
 */
 
 #include <helper_cuda.h>
@@ -23,7 +12,7 @@ This file contains simple wrapper functions that call the CUDA kernels
 #include "helper_math.h"
 #include "math_constants.h"
 
-//cuda的库
+//cuda鐨勫簱
 #include "thrust/device_ptr.h"
 #include "thrust/for_each.h"
 #include "thrust/iterator/zip_iterator.h"
@@ -44,7 +33,7 @@ __device__ float3 noise3D(float3 p)
 }
 
 // integrate particle attributes
-// 更新粒子
+// 鏇存柊绮掑瓙
 struct integrate_functor
 {
 	float deltaTime;
@@ -79,7 +68,7 @@ struct integrate_functor
 
 		
 
-		//根据Offset设置渐变
+		//鏍规嵁Offset璁剧疆娓愬彉
 		//float3 del_vel = vel2 - vel1;
 		//float3 vel = vel1 + del_vel * d_offset;
 		//float3 vel = vel2;
@@ -260,10 +249,10 @@ extern "C"
             integrate_functor(deltaTime, offset, lifetime));
     }
 
-	// 根据位置和sortVector（half_vector），得到所有numParticles的排序keys和index
+	// 鏍规嵁浣嶇疆鍜宻ortVector锛坔alf_vector锛夛紝寰楀埌鎵�鏈塶umParticles鐨勬帓搴弅eys鍜宨ndex
     void
     calcDepth(float4  *pos,
-              float   *keys,        // output key为各个pos和half_vector dot后的结果
+              float   *keys,        // output key涓哄悇涓猵os鍜宧alf_vector dot鍚庣殑缁撴灉
               uint    *indices,     // output
               float3   sortVector,
               int      numParticles)
@@ -280,7 +269,7 @@ extern "C"
         thrust::sequence(d_indices, d_indices + numParticles);
     }
 
-	//根据sortKeys排序indices
+	//鏍规嵁sortKeys鎺掑簭indices
     void sortParticles(float *sortKeys, uint *indices, uint numParticles)
     {
         thrust::sort_by_key(thrust::device_ptr<float>(sortKeys),
