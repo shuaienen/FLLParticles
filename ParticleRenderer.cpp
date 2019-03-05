@@ -1,15 +1,4 @@
 /*
- * Copyright 1993-2012 NVIDIA Corporation.  All rights reserved.
- *
- * Please refer to the NVIDIA end user license agreement (EULA) associated
- * with this source code for terms and conditions that govern your use of
- * this software. Any use, reproduction, disclosure, or distribution of
- * this software and related documentation outside the terms of the EULA
- * is strictly prohibited.
- *
- */
-
-/*
     This class renders particles using OpenGL and GLSL shaders
 */
 
@@ -61,19 +50,19 @@ SmokeRenderer::SmokeRenderer(int maxParticles) :
     m_imageFbo(0)
 {
     // load shader programs
-	// µãÄ£Ê½µÄ×ÅÉ«Æ÷
+	// ç‚¹æ¨¡å¼çš„ç€è‰²å™¨
     m_simpleProg = new GLSLProgram(particleVS, simplePS);
 
-	// Í¼Æ¬Ä£Ê½
+	// å›¾ç‰‡æ¨¡å¼
     m_particleProg = new GLSLProgram(mblurVS, mblurGS, particlePS);
 
-	// SLICEÄ£Ê½
+	// SLICEæ¨¡å¼
     m_particleShadowProg = new GLSLProgram(mblurVS, mblurGS, particleShadowPS);
 
-	// SLICEÄ£Ê½ÖĞÊÇ·ñ¶¶¶¯¹âÏß
+	// SLICEæ¨¡å¼ä¸­æ˜¯å¦æŠ–åŠ¨å…‰çº¿
     m_blurProg = new GLSLProgram(passThruVS, blurPS);
 
-	// Ã»ÓÃµ½
+	// æ²¡ç”¨åˆ°
     m_displayTexProg = new GLSLProgram(passThruVS, texture2DPS);
 
     // create buffer for light shadows
@@ -103,7 +92,7 @@ SmokeRenderer::~SmokeRenderer()
 // draw points from vertex buffer objects
 void SmokeRenderer::drawPoints(int start, int count, bool sort)
 {
-	//¶¥µã--posvbo
+	//é¡¶ç‚¹--posvbo
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, mPosVbo);
     glVertexPointer(4, GL_FLOAT, 0, 0);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -116,7 +105,7 @@ void SmokeRenderer::drawPoints(int start, int count, bool sort)
         glEnableClientState(GL_COLOR_ARRAY);
     }
 
-	//ÎÆÀí0--velvbo
+	//çº¹ç†0--velvbo
     if (mVelVbo)
     {
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, mVelVbo);
@@ -128,7 +117,7 @@ void SmokeRenderer::drawPoints(int start, int count, bool sort)
     if (sort)
     {
         glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, mIndexBuffer);
-		//ÈÔÈ»ÊÇ»æÖÆ VERTEX_ARRAY ÀïµÄ¶«Î÷£¬µ«ÊÇ¶ÁµÄidx¸ù¾İÕâ¸öelement¼ÇÂ¼µÄÀ´
+		//ä»ç„¶æ˜¯ç»˜åˆ¶ VERTEX_ARRAY é‡Œçš„ä¸œè¥¿ï¼Œä½†æ˜¯è¯»çš„idxæ ¹æ®è¿™ä¸ªelementè®°å½•çš„æ¥
         glDrawElements(GL_POINTS, count, GL_UNSIGNED_INT, (void *)(start*sizeof(unsigned int)));
         glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
     }
@@ -158,7 +147,7 @@ void SmokeRenderer::drawPointSprites(GLSLProgram *prog, int start, int count, bo
 
     if (shadowed)
     {
-		//ÓÃm_lightTextureÀ´´æ´¢Êä³ö½á¹û
+		//ç”¨m_lightTextureæ¥å­˜å‚¨è¾“å‡ºç»“æœ
         prog->bindTexture("shadowTex", m_lightTexture[m_srcLightTexture], GL_TEXTURE_2D, 0);
     }
 
@@ -253,14 +242,14 @@ void SmokeRenderer::drawSlice(int i)
     }
 
 
-	//Á£×ÓÒÑÅÅĞò£¬½«µÚiÅúÁ£×ÓÊä³öµ½¸Ãslice
+	//ç²’å­å·²æ’åºï¼Œå°†ç¬¬iæ‰¹ç²’å­è¾“å‡ºåˆ°è¯¥slice
     drawPointSprites(m_particleShadowProg, i*m_batchSize, m_batchSize, /*true*/false);
 
     m_imageFbo->Disable();
 }
 
 // draw slice of particles from light's point of view
-// ÊÓ½ÇÒÆ¶¯µ½¹âÔ´£¬ËãÒ»´Î¹âÏßºÍÒõÓ°£¬µş¼Óµ½lightBuffer
+// è§†è§’ç§»åŠ¨åˆ°å…‰æºï¼Œç®—ä¸€æ¬¡å…‰çº¿å’Œé˜´å½±ï¼Œå åŠ åˆ°lightBuffer
 void SmokeRenderer::drawSliceLightView(int i)
 {
     /*glMatrixMode(GL_MODELVIEW);
@@ -409,7 +398,7 @@ void SmokeRenderer::displayTexture(GLuint tex)
 }
 
 // composite final volume image on top of scene
-// °üº¬ÑÕÉ«ºÍÉî¶È
+// åŒ…å«é¢œè‰²å’Œæ·±åº¦
 void SmokeRenderer::compositeResult()
 {
     glViewport(0, 0, mWindowW, mWindowH);
@@ -480,7 +469,7 @@ void SmokeRenderer::render()
 
 // render scene depth to texture
 // (this is to ensure that particle are correctly occluded in the low-resolution render buffer)
-// ÀëÆÁÇé¿öÏÂĞ´ÈëÉî¶ÈĞÅÏ¢µ½ÎÆÀí£¨buffer£©
+// ç¦»å±æƒ…å†µä¸‹å†™å…¥æ·±åº¦ä¿¡æ¯åˆ°çº¹ç†ï¼ˆbufferï¼‰
 void SmokeRenderer::beginSceneRender(Target target)
 {
     if (target == LIGHT_BUFFER)
@@ -639,7 +628,7 @@ void SmokeRenderer::drawQuad()
     glEnd();
 }
 
-// ÎŞ
+// æ— 
 void SmokeRenderer::drawVector(vec3f v)
 {
     glBegin(GL_LINES);
@@ -649,7 +638,7 @@ void SmokeRenderer::drawVector(vec3f v)
 }
 
 // render vectors to screen for debugging
-// ×ø±êÖá
+// åæ ‡è½´
 void SmokeRenderer::debugVectors()
 {
     glColor3f(1.0f, 1.0f, 0.0f);
