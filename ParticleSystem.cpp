@@ -1,15 +1,3 @@
-/*
- * Copyright 1993-2012 NVIDIA Corporation.  All rights reserved.
- *
- * Please refer to the NVIDIA end user license agreement (EULA) associated
- * with this source code for terms and conditions that govern your use of
- * this software. Any use, reproduction, disclosure, or distribution of
- * this software and related documentation outside the terms of the EULA
- * is strictly prohibited.
- *
- */
-
-
 #include <assert.h>
 #include <math.h>
 #include <memory.h>
@@ -93,7 +81,7 @@ ParticleSystem::_initialize(int numParticles, bool bUseGL)
     m_pos.alloc(m_numParticles, m_bUseVBO, true);    // create as VBO
 	m_color.alloc(m_numParticles, m_bUseVBO, true);    // create as VBO
 
-	// ½»ÌæËÙ¶ÈÓëÑÕÉ«£¬Ö»¶Á²»Ğ´£¬µ¥»º´æ¼´¿É
+	// äº¤æ›¿é€Ÿåº¦ä¸é¢œè‰²ï¼Œåªè¯»ä¸å†™ï¼Œå•ç¼“å­˜å³å¯
 
 	m_color1.alloc(m_numParticles, false, false);
 	m_color2.alloc(m_numParticles, false, false);
@@ -121,7 +109,7 @@ ParticleSystem::step(float deltaTime, float *currentTime, int *currentMonth)
     assert(m_bInitialized);
 
     m_params.time = m_time;
-	//¸üĞÂcudaÖĞµÄ²ÎÊı£¨GPU£©£¬ÆäÊµÒ²¾ÍÊ±¼ä±äÁË¶øÒÑ
+	//æ›´æ–°cudaä¸­çš„å‚æ•°ï¼ˆGPUï¼‰ï¼Œå…¶å®ä¹Ÿå°±æ—¶é—´å˜äº†è€Œå·²
     setParameters(&m_params);
 
 	if (*currentTime > CYCLE_TIME)
@@ -138,7 +126,7 @@ ParticleSystem::step(float deltaTime, float *currentTime, int *currentMonth)
 
 		m_color1.setHostPtr(particleInfos[d]->color);
 		m_color2.setHostPtr(particleInfos[(d+1) ]->color);
-		//¸´ÖÆµ½ÏÔ´æ
+		//å¤åˆ¶åˆ°æ˜¾å­˜
 		m_color1.copy(GpuArray<float4>::HOST_TO_DEVICE);
 		m_color2.copy(GpuArray<float4>::HOST_TO_DEVICE);
 	}
@@ -150,7 +138,7 @@ ParticleSystem::step(float deltaTime, float *currentTime, int *currentMonth)
 	m_color.map();
 
     // integrate particles
-	// ÔÚGPUÖĞ¸üĞÂÁ£×ÓµÄ×´Ì¬
+	// åœ¨GPUä¸­æ›´æ–°ç²’å­çš„çŠ¶æ€
     integrateSystem(m_pos.getDevicePtr(), m_pos.getDeviceWritePtr(),
                     //m_vel.getDeviceWritePtr(),
 					//m_vel1.getDevicePtr(), m_vel2.getDevicePtr(), 
@@ -172,8 +160,8 @@ ParticleSystem::step(float deltaTime, float *currentTime, int *currentMonth)
 }
 
 // depth sort the particles //for every step
-//SORTµ½halfvectorÉÏ£¬ÓÃÓÚsliceÏÔÊ¾Ê±Á£×ÓµÄµ÷ÓÃ
-//Èç¹²32000¸öÁ£×Ó£¬32¸öslice,ÔòÃ¿¸ösliceÉÏÏÔÊ¾1000¸öÁ£×Ó£¨°´ÅÅĞòÏÈºó£©
+//SORTåˆ°halfvectorä¸Šï¼Œç”¨äºsliceæ˜¾ç¤ºæ—¶ç²’å­çš„è°ƒç”¨
+//å¦‚å…±32000ä¸ªç²’å­ï¼Œ32ä¸ªslice,åˆ™æ¯ä¸ªsliceä¸Šæ˜¾ç¤º1000ä¸ªç²’å­ï¼ˆæŒ‰æ’åºå…ˆåï¼‰
 void
 ParticleSystem::depthSort()
 {
@@ -186,11 +174,11 @@ ParticleSystem::depthSort()
     m_indices.map();
 
     // calculate depth
-	// ¸ù¾İÎ»ÖÃºÍm_sortVector£¨half_vector£©£¬µÃµ½ËùÓĞm_numParticlesµÄÅÅĞòkeysºÍindex
+	// æ ¹æ®ä½ç½®å’Œm_sortVectorï¼ˆhalf_vectorï¼‰ï¼Œå¾—åˆ°æ‰€æœ‰m_numParticlesçš„æ’åºkeyså’Œindex
     calcDepth(m_pos.getDevicePtr(), m_sortKeys.getDevicePtr(), m_indices.getDevicePtr(), m_sortVector, m_numParticles);
 
     // radix sort
-	//¸ù¾İkeysÅÅĞòindex
+	//æ ¹æ®keysæ’åºindex
     sortParticles(m_sortKeys.getDevicePtr(), m_indices.getDevicePtr(), m_numParticles);
 
     m_pos.unmap();
@@ -306,7 +294,7 @@ void ParticleSystem::initDepthData()
 
 
 // initialize in regular grid
-// Ôö¼Óµ½60¸öflux +++++
+// å¢åŠ åˆ°60ä¸ªflux +++++
 void
 ParticleSystem::initGrid(vec2f startLonLat, float spatialRes, vec2f imageSize, float sampleFactor, float jitter, uint numParticles, float lifetime)
 {
@@ -321,19 +309,19 @@ ParticleSystem::initGrid(vec2f startLonLat, float spatialRes, vec2f imageSize, f
 		return;
 	}
 
-	//¶ÁÈ¡ArgoÊı¾İ¿í¶È¡¢¸ß¶È¡¢Éî¶È
+	//è¯»å–Argoæ•°æ®å®½åº¦ã€é«˜åº¦ã€æ·±åº¦
 	unsigned int height = argoData[0]->GetDataHeight();
 	unsigned int width = argoData[0]->GetDataWidth();
 	unsigned int depth = argoData[0]->GetDataDepth();
 
-	//Ã¿Ö¡×´Ì¬
+	//æ¯å¸§çŠ¶æ€
 	float4 *posPtr = m_pos.getHostPtr();
 
-	//ÂÒĞò´´½¨
+	//ä¹±åºåˆ›å»º
 	std::vector<uint> randomVector;
 	for (uint i=0; i<m_numParticles; i++) 
 		randomVector.push_back(i); 
-	//Ëæ»ú´òÂÒ
+	//éšæœºæ‰“ä¹±
 	std::random_shuffle ( randomVector.begin(), randomVector.end() );
 	uint index = 0;
 	uint n =0;	uint d = 0;	uint w = 0; uint h = 0;
@@ -366,14 +354,14 @@ ParticleSystem::initGrid(vec2f startLonLat, float spatialRes, vec2f imageSize, f
 	}
 
 
-	//ÓĞÒ»¸öÎÊÌâ£¬Á£×Ó×ÜÊıºÍÍø¸ñ×ÜÊı²»¶ÔÆë
-	//ÕâÀï½öÕë¶Ô8Î»bmp
+	//æœ‰ä¸€ä¸ªé—®é¢˜ï¼Œç²’å­æ€»æ•°å’Œç½‘æ ¼æ€»æ•°ä¸å¯¹é½
+	//è¿™é‡Œä»…é’ˆå¯¹8ä½bmp
 	std::vector<uint>::iterator it=randomVector.begin();
 	int resamplePixel = 1;
 	//float minVector = 12;
 	for (; it!=randomVector.end(); ++it)
 	{
-		//Íâ²¿Ôö¼ÓÒ»¸öÑ­»·£¬ºÏÀíÀûÓÃËùÓĞÁ£×Ó
+		//å¤–éƒ¨å¢åŠ ä¸€ä¸ªå¾ªç¯ï¼Œåˆç†åˆ©ç”¨æ‰€æœ‰ç²’å­
 		for (n = 0; n< 10000; n++)
 		{
 			for (d = 0; d <= (depth-1)*m_depthTimes*m_depthTimes; d+=1)
@@ -385,7 +373,7 @@ ParticleSystem::initGrid(vec2f startLonLat, float spatialRes, vec2f imageSize, f
 						if(it==randomVector.end())
 							break;
 
-						//ÓĞ¶àÉÙ×éÊı¾İ£¬¾ÍÒª·Åµ½¶àÉÙ¸öinfoÀïÃæ¡£
+						//æœ‰å¤šå°‘ç»„æ•°æ®ï¼Œå°±è¦æ”¾åˆ°å¤šå°‘ä¸ªinfoé‡Œé¢ã€‚
 						for (int argoIndex = 0; argoIndex < argoData.size(); argoIndex++)
 						{
 							float value;
@@ -412,12 +400,12 @@ ParticleSystem::initGrid(vec2f startLonLat, float spatialRes, vec2f imageSize, f
 								color = getColorFromColorRamp(value,maxValue,minValue);
 								alpha = (value-minValue)/(maxValue-minValue);
 							}
-							//Ê×Î²×´Ì¬
+							//é¦–å°¾çŠ¶æ€
 							particleInfos[argoIndex]->color[index] = make_float4(color.x, color.y, color.z, alpha);
 							//particleInfos[argoIndex]->vel[index] = make_float4(0,0,0,lifetime);
 						}
 						
-						//Éè¶¨³õÊ¼Î»ÖÃ¡£
+						//è®¾å®šåˆå§‹ä½ç½®ã€‚
 						//vec3f LonLat = vec3f(startLonLat.x, 0, startLonLat.y) + 0.1 * vec3f(w, -(float)d, -(float)h);
 						//LonLat.y *= 1.5;
 
@@ -426,7 +414,7 @@ ParticleSystem::initGrid(vec2f startLonLat, float spatialRes, vec2f imageSize, f
 
 						posPtr[index] = make_float4(pos.x, pos.y, pos.z, 0.0f);
 
-						//×¼±¸ÏÂÒ»×éÑ­»·
+						//å‡†å¤‡ä¸‹ä¸€ç»„å¾ªç¯
 						++it;
 						availNum++;
 
@@ -453,11 +441,11 @@ ParticleSystem::initGrid(vec2f startLonLat, float spatialRes, vec2f imageSize, f
 	}
 
 	/*fluxData.*/
-	std::vector<Hdf4Reader *>().swap(argoData);  //Çå³ıÈİÆ÷²¢×îĞ¡»¯ËüµÄÈİÁ¿
-	std::vector<uint>().swap(randomVector);  //Çå³ıÈİÆ÷²¢×îĞ¡»¯ËüµÄÈİÁ¿
+	std::vector<Hdf4Reader *>().swap(argoData);  //æ¸…é™¤å®¹å™¨å¹¶æœ€å°åŒ–å®ƒçš„å®¹é‡
+	std::vector<uint>().swap(randomVector);  //æ¸…é™¤å®¹å™¨å¹¶æœ€å°åŒ–å®ƒçš„å®¹é‡
 }
 
-// ³õÊ¼»¯
+// åˆå§‹åŒ–
 void
 ParticleSystem::reset(ParticleConfig config)
 {
@@ -466,7 +454,7 @@ ParticleSystem::reset(ParticleConfig config)
         default:
         case CONFIG_GRID:
             {
-				//ÔİÊ±ÉèÖÃÕâ¸ö´óĞ¡
+				//æš‚æ—¶è®¾ç½®è¿™ä¸ªå¤§å°
 				float jitter = m_particleRadius*0.001f;
 				//vec3f vel = vec3f(0.0f, 0.01f, 0.0f);
 				initGrid(m_startLonLat, m_spatialRes, m_imageSize, 4.0f, jitter, m_numParticles, m_particleLifetime);
@@ -474,11 +462,11 @@ ParticleSystem::reset(ParticleConfig config)
             break;
     }
 
-	//ÄÚ´æµ½ÏÔ´æ
+	//å†…å­˜åˆ°æ˜¾å­˜
     m_pos.copy(GpuArray<float4>::HOST_TO_DEVICE);
 
 
-	//Ê×Î²×´Ì¬
+	//é¦–å°¾çŠ¶æ€
 	//m_vel1.setHostPtr(particleInfos[0]->vel);
 	//m_vel2.setHostPtr(particleInfos[1]->vel);
 	m_color1.setHostPtr(particleInfos[0]->color);
